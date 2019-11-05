@@ -5,29 +5,28 @@ import os
 
 def countSymbols(fileName):
     stat = {}
-    try:
+
+    with open(fileName, "r") as f:
         f = open(fileName, "r")
         line = f.readline()
         while line:
             line = list(filter(lambda x: x != '\n', list(line)))
-            for elem in line:
-                if elem not in stat:
-                    stat[elem] = 1
+            for c in line:
+                if c not in stat:
+                    stat[c] = 1
                 else:
-                    stat[elem] = stat[elem] + 1
+                    stat[c] = stat[c] + 1
             line = f.readline()
-    finally:
-        f.close()
     
-    sorted_stat = sorted(stat.items(), key=operator.itemgetter(1), reverse=True)
-    print(sorted_stat)
-    char_num = 0
-    for elem in sorted_stat:
-        char_num += elem[1]
-    print("Total number of unique characters: " + str(char_num))
+    sortedStat = sorted(stat.items(), key=operator.itemgetter(1), reverse=True)
+    print(sortedStat)
+    uniqueCharNum = 0
+    for elem in sortedStat:
+        uniqueCharNum += elem[1]
+    print("Total number of unique characters: " + str(uniqueCharNum))
     f = open('out.txt', 'w')
-    for elem in sorted_stat:
-        p = elem[1] / char_num * 100
+    for elem in sortedStat:
+        p = elem[1] / uniqueCharNum * 100
         line = f"'{elem[0]}': {elem[1]} {p:.2f}%"
         print(line)
         f.write(line + "\n")
@@ -46,6 +45,4 @@ if not os.path.exists(sys.argv[1]):
     print("Could not find input file: " + sys.argv[1])
     sys.exit()
     
-
-
 countSymbols(str(sys.argv[1]))
