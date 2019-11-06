@@ -17,20 +17,20 @@ def countSymbols(fileName):
                 else:
                     stat[c] = stat[c] + 1
             line = f.readline()
+    return sorted(stat.items(), key=operator.itemgetter(1), reverse=True)
     
-    sortedStat = sorted(stat.items(), key=operator.itemgetter(1), reverse=True)
-    print(sortedStat)
+def display(stat):
+    print(stat)
     uniqueCharNum = 0
-    for elem in sortedStat:
+    for elem in stat:
         uniqueCharNum += elem[1]
     print("Total number of unique characters: " + str(uniqueCharNum))
-    f = open('out.txt', 'w')
-    for elem in sortedStat:
-        p = elem[1] / uniqueCharNum * 100
-        line = f"'{elem[0]}': {elem[1]} {p:.2f}%"
-        print(line)
-        f.write(line + "\n")
-    f.close
+    with open('out.txt', 'w') as f:
+        for elem in stat:
+            p = elem[1] / uniqueCharNum * 100
+            line = f"'{elem[0]}': {elem[1]} {p:.2f}%"
+            print(line)
+            f.write(line + "\n")
 
 if sys.argv[1] == "-h":
     print("Usage: python stats.py [filename]")
@@ -45,4 +45,4 @@ if not os.path.exists(sys.argv[1]):
     print("Could not find input file: " + sys.argv[1])
     sys.exit()
     
-countSymbols(str(sys.argv[1]))
+display(countSymbols(str(sys.argv[1])))

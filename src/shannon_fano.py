@@ -1,0 +1,1 @@
+def shannonFanno(fileName):
