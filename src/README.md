@@ -7,12 +7,17 @@ Creates a statistic of how many times each character appears in the input docume
 The following script can be invoked from the command line:
 
 ```bash
-python stats.py [path_to_the_input_file]
+encode.py [task] [filename]
 ```
 
 For help, invoke it as such:
 
 ```bash
-python stats.py -h
+encode.py [task] [filename]
 ```
+
+Currently available tasks:
+ - **-d** : creates and displays the symbol appearance statistics
+ - **-sf** : encodes the input file using Shannon-Fano encoding **WIP**
+ - **-h** :  prints the help message
 
