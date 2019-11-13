@@ -12,8 +12,7 @@ import collections
 def createStatistic(filePath):
     stat = {}
     charNum = 0
-    with open(filePath, "r") as f:
-        f = open(filePath, "r")
+    with open(filePath, "r", encoding='utf-8-sig') as f:
         line = f.readline()
         while line:
             line = list(filter(lambda x: x != '\n', list(line)))
