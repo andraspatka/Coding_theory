@@ -1,5 +1,7 @@
 # Coding theory implemented algorithms 2019
 
+![](https://github.com/andraspatka/Coding_theory/workflows/Encode%20CLI%20Project/badge.svg)
+
 ## Usage of Python scripts
 
 # stats.py
