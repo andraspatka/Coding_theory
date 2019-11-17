@@ -1,69 +1,82 @@
 #!/usr/bin/env python3
 import stats
 
-def shannonFanno(fileName):
+"""Defines the Shannon-Fano code of the given characters.
+:param fileName: path to the input file
+
+:returns: A list of lists, where:
+            0 - character code
+            1 - character's number of appearances
+            2 - probability
+            3 - character's Shannon-Fano code
+"""
+def shannonFano(fileName):
     stat = stats.createStatistic(fileName)
     codes = [list(tup + ('',)) for tup in stat]
-
-    start = 0
-    end = len(codes)
-    #print(codes)
-    #print(indexToPartAt(codes, start, end))
-    #print(codes)
-    codes = recursive(codes, 0, end, '')
-    print(codes)
-    #part = indexToPartAt(codes, start, end)
-    #print(addCode(codes, start, part, '0'))
-    #print(addCode(codes, part, end, '1'))
-
-    #print(codes)
-count = 0
-
-def recursive(codes, start, end, code):
-    global count
-    if count < 20:
-        print(f"called: start: {start} end: {end} code: '{code}'")
-        count += 1
-    if end - start <= 1:
-        codes[start][3] = codes[start][3] + code
-        return codes
-        #addCode(codes, start, end, code)
-        #print(codes)
-    else:
-        part = indexToPartAt(codes, start, end)
-        #print(str(part))
-        #print(f"called: start: {start} part: {part} end: {end} code: '{code}'")
-        codes = recursive(codes, start, part, '0')
-        codes = recursive(codes, part, end, '1')
-
-def addCode(codes, start, end, code):
-    for i in range(start, end):
-        codes[i][3] = codes[i][3] + code
+    
+    encode(codes)
     return codes
 
+"""Convenience method for calling encodeRecursive(codes, start, end, code)
+:param codes: the list of 4 length lists containing character information
+"""
+def encode(codes):
+    encodeRecursive(codes, 0, len(codes))
+
+"""Recursive implementation of the Shannon-Fano coding algorithm.
+
+:param codes: the list of 4 length lists where:
+    0 - character code
+    1 - character's number of appearances
+    2 - probability
+    3 - character's Shannon-Fano code
+:param start: the starting index (inclusive)
+:param end: the ending index (exclusive)
+"""
+def encodeRecursive(codes, start, end):
+    if end - start <= 1:
+        return
+    part = indexToPartAt(codes, start, end)
+
+    encodeRecursive(codes, start, part)
+    addCode(codes, start, part, '0')
+    encodeRecursive(codes, part, end)
+    addCode(codes, part, end, '1')
+
+"""Adds the given code ('0' or '1') to the character's Shannon-Fano code.
+:param codes: the list of 4 length lists containing character information
+:param start: the starting index (inclusive)
+:param end: the ending index (exclusive)
+:param code: the code to add:
+"""
+def addCode(codes, start, end, code):
+    for i in range(start, end):
+        codes[i][3] = code + codes[i][3]
+
+
+"""Returns the index where parting the given array is advantageous.
+:param codes: the list of 4 length lists containing character information
+:param start: the starting index (inclusive)
+:param end: the ending index (exclusive)
+
+:returns:
+    the index where parting the given array is advantageous.
+"""
 def indexToPartAt(codes, start, end):    
     if end - start <= 1:
         return start
-    sum = 0
-    index = 0
-    desired = 0
+    sum = desired = backSum = 0
     for i in range(start, end):
         desired += codes[i][2]
     desired /= 2
     for i in range(start, end):
-        if sum < desired:
-            index = i
-            prevSum = sum
-            sum += codes[index][2]
-            if sum > desired:
-                if ((sum - desired) < (desired - prevSum)):
-                    return index
-                else:
-                    if end - start > 3:
-                        return index - 1
-                    else:
-                        return index
-                #return index if ((sum - desired) < (desired - prevSum)) else index - 1
-        else:
-            return i
-    
+        sum += codes[i][2]
+        if sum == desired:
+            return i + 1
+        elif sum > desired:
+            j = end - 1
+            while backSum < desired:
+                backSum += codes[j][2]
+                j -= 1
+            return i + 1 if abs(desired - sum) < abs(desired - backSum) else j + 1
+    return
