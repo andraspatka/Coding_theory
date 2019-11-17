@@ -1,4 +1,4 @@
-name: Python application
+name: Encode CLI Project
 
 on:
   push:
@@ -14,14 +14,13 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Set up Python 3.6.5
+    - name: Set up Python 3.6.8
       uses: actions/setup-python@v1
       with:
-        python-version: 3.6.5
+        python-version: 3.6.8
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
     - name: Lint with flake8
       run: |
         pip install flake8
@@ -30,7 +29,7 @@ jobs:
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
-      working-directory: docs
+      working-directory: src
       run: |
         pip install pytest
         pytest
