@@ -1,4 +1,11 @@
 #!/usr/bin/env python3
+"""
+Script for displaying probabilities and encoding a source using Shannon-Fano
+Usage:  encode.py [task] [filename]
+        Available tasks:    -d:  creates and displays the symbol appearance statistics
+                            -sf: performs a shannon-fano encoding
+                            -h:  displays the help message
+"""
 import operator
 import collections
 import sys
@@ -38,6 +45,6 @@ if not os.path.exists(fileName):
     sys.exit(errno.ENOENT)
 
 if task == "-d":
-    stats.displayStatistic(stats.createStatistic(fileName))
+    utils.display(stats.createStatistic(fileName))
 if task == "-sf":
-    shannon_fano.shannonFanno(fileName)
+    utils.display(shannon_fano.shannonFano(fileName))

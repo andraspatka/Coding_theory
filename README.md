@@ -2,7 +2,7 @@
 
 ## Usage of Python scripts
 
-# stats.py
+# encode.py
 
 Creates a statistic of how many times each character appears in the input document. The created statistic is output to stdout and to out.txt
 
