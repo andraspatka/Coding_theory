@@ -33,38 +33,12 @@ def shannonFano(fileName):
         2 - optimality
 """
 def getOptimality(codes):
-    avg = avgCodeLength(codes)
-    min = minCodeLength(codes)
+    codes = [[c[0], c[1], c[2] / 100, c[3]] for c in codes ]
+    avg = sum([c[2] * len(c[3]) for c in codes])
+    min = - sum([c[2] * math.log(c[2], 2) for c in codes])
     opt = min / avg
 
     return [avg, min, opt]
-
-"""Returns the avarage code length
-:param codes: the list of 4 length lists where:
-    0 - character code
-    1 - character's number of appearances
-    2 - probability
-    3 - character's Shannon-Fano code
-
-:return:
-    the avarage code length
-"""
-def avgCodeLength(codes):
-    return sum([c[2] / 100 * len(c[3]) for c in codes])
-
-"""Returns the minimum code length
-:param codes: the list of 4 length lists where:
-    0 - character code
-    1 - character's number of appearances
-    2 - probability
-    3 - character's Shannon-Fano code
-
-:return:
-    the minimum code length
-"""
-def minCodeLength(codes):
-    codes = [[c[0], c[1], c[2] / 100, c[3]] for c in codes ]
-    return - sum([c[2] * math.log(c[2], 2) for c in codes])
 
 """Convenience method for calling encodeRecursive(codes, start, end, code)
 :param codes: the list of 4 length lists containing character information
