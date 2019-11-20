@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 import stats
+import statistics
+import math
 
 """Defines the Shannon-Fano code of the given characters.
 :param fileName: path to the input file
@@ -16,6 +18,27 @@ def shannonFano(fileName):
     
     encode(codes)
     return codes
+
+"""Returns the metrics determining the encoding's optimality
+:param codes: the list of 4 length lists where:
+    0 - character code
+    1 - character's number of appearances
+    2 - probability
+    3 - character's Shannon-Fano code
+
+:return:
+    a three element array, where:
+        0 - average code length
+        1 - minimum code length
+        2 - optimality
+"""
+def getOptimality(codes):
+    codes = [[c[0], c[1], c[2] / 100, c[3]] for c in codes ]
+    avg = sum([c[2] * len(c[3]) for c in codes])
+    min = - sum([c[2] * math.log(c[2], 2) for c in codes])
+    opt = min / avg
+
+    return [avg, min, opt]
 
 """Convenience method for calling encodeRecursive(codes, start, end, code)
 :param codes: the list of 4 length lists containing character information
