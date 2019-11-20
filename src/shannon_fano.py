@@ -31,14 +31,16 @@ def shannonFano(fileName):
         0 - average code length
         1 - minimum code length
         2 - optimality
+        3 - compression ratio
 """
 def getOptimality(codes):
     codes = [[c[0], c[1], c[2] / 100, c[3]] for c in codes ]
     avg = sum([c[2] * len(c[3]) for c in codes])
     min = - sum([c[2] * math.log(c[2], 2) for c in codes])
     opt = min / avg
+    comprRatio = math.ceil(math.log2(len(codes))) / avg
 
-    return [avg, min, opt]
+    return [avg, min, opt, comprRatio]
 
 """Convenience method for calling encodeRecursive(codes, start, end, code)
 :param codes: the list of 4 length lists containing character information

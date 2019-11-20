@@ -45,6 +45,8 @@ def displayOptimality(optimality):
         outputLine(f, line)
         line = f"Optimality: {optimality[2]:.3f}"
         outputLine(f, line)
+        line = f"Compression ratio: {optimality[3]:.3f}"
+        outputLine(f, line)
 
 
 def outputLine(f, line):
