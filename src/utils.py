@@ -21,8 +21,7 @@ def displayStatistic(stat):
     with open('stats.txt', 'w') as f:
         for elem in stat:
             line = f"'{elem[0]}': {elem[1]} {elem[2]:.2f}%"
-            print(line)
-            f.write(line + "\n")
+            outputLine(f, line)
 
 """Displays the values stored in a list of lists containing character statistics information and the Shannon-Fano code.
 Writes the values to codes.txt as well as to stdout
@@ -34,5 +33,21 @@ def displayShannonFanoCodes(codes):
     with open('codes.txt', 'w') as f:
         for elem in codes:
             line = f"'{elem[0]}': {elem[1]} {elem[2]:.2f}% '{elem[3]}'"
-            print(line)
-            f.write(line + "\n")
+            outputLine(f, line)
+
+def displayOptimality(optimality):
+    with open('codes.txt', 'a') as f:
+        line = "-------------------------------------"
+        outputLine(f, line)
+        line = f"Average code length: {optimality[0]:.3f}"
+        outputLine(f, line)
+        line = f"Minimum code length: {optimality[1]:.3f}"
+        outputLine(f, line)
+        line = f"Optimality: {optimality[2]:.3f}"
+        outputLine(f, line)
+
+
+def outputLine(f, line):
+    print(line)
+    f.write(line + "\n")
+        
