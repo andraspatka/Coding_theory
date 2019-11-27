@@ -6,7 +6,7 @@
 
 # encode.py
 
-Creates a statistic of how many times each character appears in the input document. The created statistic is output to stdout and to out.txt
+Is a CLI for creating a statistic of how many times each character appears in the input document and encoding the input file using the Shannon-Fano or Huffman encoding.
 
 The following script can be invoked from the command line:
 
@@ -17,11 +17,13 @@ encode.py [task] [filename]
 For help, invoke it as such:
 
 ```bash
-encode.py [task] [filename]
+encode.py -h
 ```
 
 Currently available tasks:
  - **-d** : creates and displays the symbol appearance statistics
  - **-sf** : encodes the input file using Shannon-Fano encoding
  - **-sfs** : encodes the input file using Shannon-Fano encoding and prints the encoding's optimality
+ - **-hf** : encodes the input file using Huffman encoding
+ - **-hfs** : encodes the input file using Huffman encoding and prints the encoding's optimality
  - **-h** :  prints the help message
