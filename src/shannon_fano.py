@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 import stats
-import statistics
-import math
 
 """Defines the Shannon-Fano code of the given characters.
 :param fileName: path to the input file
@@ -12,41 +10,12 @@ import math
             2 - probability
             3 - character's Shannon-Fano code
 """
-def shannonFano(fileName):
+def encode(fileName):
     stat = stats.createStatistic(fileName)
     codes = [list(tup + ('',)) for tup in stat]
     
-    encode(codes)
+    shannonFanoRecursive(codes, 0, len(codes))
     return codes
-
-"""Returns the metrics determining the encoding's optimality
-:param codes: the list of 4 length lists where:
-    0 - character code
-    1 - character's number of appearances
-    2 - probability
-    3 - character's Shannon-Fano code
-
-:return:
-    a three element array, where:
-        0 - average code length
-        1 - minimum code length
-        2 - optimality
-        3 - compression ratio
-"""
-def getOptimality(codes):
-    codes = [[c[0], c[1], c[2] / 100, c[3]] for c in codes ]
-    avg = sum([c[2] * len(c[3]) for c in codes])
-    min = - sum([c[2] * math.log(c[2], 2) for c in codes])
-    opt = min / avg
-    comprRatio = math.ceil(math.log2(len(codes))) / avg
-
-    return [avg, min, opt, comprRatio]
-
-"""Convenience method for calling encodeRecursive(codes, start, end, code)
-:param codes: the list of 4 length lists containing character information
-"""
-def encode(codes):
-    encodeRecursive(codes, 0, len(codes))
 
 """Recursive implementation of the Shannon-Fano coding algorithm.
 
@@ -58,14 +27,13 @@ def encode(codes):
 :param start: the starting index (inclusive)
 :param end: the ending index (exclusive)
 """
-def encodeRecursive(codes, start, end):
+def shannonFanoRecursive(codes, start, end):
     if end - start <= 1:
         return
     part = indexToPartAt(codes, start, end)
 
-    encodeRecursive(codes, start, part)
     addCode(codes, start, part, '0')
-    encodeRecursive(codes, part, end)
+    shannonFanoRecursive(codes, part, end)
     addCode(codes, part, end, '1')
 
 """Adds the given code ('0' or '1') to the character's Shannon-Fano code.

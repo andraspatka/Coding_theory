@@ -15,13 +15,15 @@ def test_firstArgumentHelp():
     out, err, exitCode = capture(command)
     outputMessages = out.split(b'\r\n')
 
-    assert len(outputMessages) == 6
+    assert len(outputMessages) == 8
     assert outputMessages[0] == b'Usage: encode.py [task] [filename]'
     assert outputMessages[1] == b'Available tasks: -d:   creates and displays the symbol appearance statistics'
     assert outputMessages[2] == b'                 -sf:  performs a shannon-fano encoding'
     assert outputMessages[3] == b'                 -sfs: performs a shannon-fano encoding and displays its optimality'
-    assert outputMessages[4] == b'                 -h:   displays this message'
-    assert outputMessages[5] == b'' #Trailing endline
+    assert outputMessages[4] == b'                 -hf:  performs a huffman encoding'
+    assert outputMessages[5] == b'                 -hfs: performs a huffman encoding and displays its optimality'
+    assert outputMessages[6] == b'                 -h:   displays this message'
+    assert outputMessages[7] == b'' #Trailing endline
 
     assert err == b''
     assert exitCode == 0

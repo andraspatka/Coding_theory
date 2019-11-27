@@ -14,14 +14,17 @@ import os
 import stats
 import shannon_fano
 import utils
+import huffman
 
 arguments = sys.argv
 
 TASK_DISPLAY = "-d"
 TASK_SF = "-sf"
+TASK_HUFF = "-hf"
 TASK_SF_STAT = "-sfs"
+TASK_HUFF_STAT = "-hfs"
 
-TASKS = [TASK_DISPLAY, TASK_SF, TASK_SF_STAT]
+TASKS = [TASK_DISPLAY, TASK_SF, TASK_HUFF, TASK_SF_STAT, TASK_HUFF_STAT]
 
 if len(arguments) == 1:
     utils.printInvalidUsageErrorMessage()
@@ -29,9 +32,11 @@ if len(arguments) == 1:
 
 if arguments[1] == "-h":
     print("Usage: encode.py [task] [filename]")
-    print("Available tasks: -d:   creates and displays the symbol appearance statistics")
-    print("                 -sf:  performs a shannon-fano encoding")
-    print("                 -sfs: performs a shannon-fano encoding and displays its optimality")
+    print(f"Available tasks: {TASK_DISPLAY}:   creates and displays the symbol appearance statistics")
+    print(f"                 {TASK_SF}:  performs a shannon-fano encoding")
+    print(f"                 {TASK_SF_STAT}: performs a shannon-fano encoding and displays its optimality")
+    print(f"                 {TASK_HUFF}:  performs a huffman encoding")
+    print(f"                 {TASK_HUFF_STAT}: performs a huffman encoding and displays its optimality")
     print("                 -h:   displays this message")
     sys.exit()
 
@@ -54,9 +59,14 @@ if not os.path.exists(fileName):
 if task == TASK_DISPLAY:
     utils.display(stats.createStatistic(fileName))
 if task == TASK_SF:
-    utils.display(shannon_fano.shannonFano(fileName))
+    utils.display(shannon_fano.encode(fileName))
 if task == TASK_SF_STAT:
-    codes = shannon_fano.shannonFano(fileName)
+    codes = shannon_fano.encode(fileName)
     utils.display(codes)
-    utils.displayOptimality(shannon_fano.getOptimality(codes))
-
+    utils.displayOptimality(stats.getOptimality(codes))
+if task == TASK_HUFF:
+    utils.display(huffman.encode(fileName))
+if task == TASK_HUFF_STAT:
+    codes = huffman.encode(fileName)
+    utils.display(huffman.encode(fileName))
+    utils.displayOptimality(stats.getOptimality(codes))

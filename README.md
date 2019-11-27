@@ -22,5 +22,6 @@ encode.py [task] [filename]
 
 Currently available tasks:
  - **-d** : creates and displays the symbol appearance statistics
- - **-sf** : encodes the input file using Shannon-Fano encoding **WIP**
+ - **-sf** : encodes the input file using Shannon-Fano encoding
+ - **-sfs** : encodes the input file using Shannon-Fano encoding and prints the encoding's optimality
  - **-h** :  prints the help message
