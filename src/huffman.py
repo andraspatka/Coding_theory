@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import stats
+import time
 
 """
 General representation of a tree node
@@ -41,13 +42,17 @@ def heapToList(root, codes):
             3 - character's Shannon-Fano code
 """
 def encode(fileName):
+    current_milli_time = int(round(time.time() * 1000))
     stat = stats.createStatistic(fileName)
     codes = [list(tup + ('',)) for tup in stat]
 
     if len(codes) % 2 == 1:
         codes.insert(len(codes), ['', '', 0, ''])
 
-    return huffman(codes)
+    codes = huffman(codes)
+    current_milli_time = int(round(time.time() * 1000)) - current_milli_time
+    print(f"Futasi ido Bandi: {current_milli_time}")
+    return codes
 
 """Implementation of the Huffman encoding algorithm, using a max heap.
 
@@ -77,4 +82,5 @@ def huffman(codes):
     addCode(heapNodes[0]) # heapNodes[0] is the root
     codes = []
     heapToList(heapNodes[0], codes)
+    codes.sort(key = lambda c : c[2], reverse = True)
     return codes
