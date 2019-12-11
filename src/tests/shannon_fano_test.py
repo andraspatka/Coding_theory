@@ -1,5 +1,6 @@
 # shannon_fano_test.py
 import shannon_fano
+from EncodeNode import EncodeNode
 
 def test_indexToPartAt_perfectParting():
     p = [50.0, 25.0, 12.5, 6.25, 3.125, 3.125]
@@ -42,4 +43,4 @@ def callIndexToPartAt(probs):
 Creates test data from a list of probabilities
 """
 def createCodesTestData(probabilities):
-    return [['', '', p] for p in probabilities]
+    return [EncodeNode(prob = p) for p in probabilities]

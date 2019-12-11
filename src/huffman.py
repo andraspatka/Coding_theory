@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import stats
+from EncodeNode import EncodeNode
 
 """
 General representation of a tree node
@@ -16,7 +17,7 @@ class HeapNode(object):
 """
 def addCode(root, code=''):   
     if root:
-        root.value[3] = code
+        root.value.code = code
         addCode(root.left, code + '1')
         addCode(root.right, code + '0')
     
@@ -26,7 +27,7 @@ def addCode(root, code=''):
 """
 def heapToList(root, codes): 
     if root:
-        if root.value[0] != '':
+        if root.value.symbol != '':
             codes.insert(0, root.value)
         heapToList(root.left, codes) 
         heapToList(root.right, codes)
@@ -41,14 +42,12 @@ def heapToList(root, codes):
             3 - character's Shannon-Fano code
 """
 def encode(fileName):
-    stat = stats.createStatistic(fileName)
-    codes = [list(tup + ('',)) for tup in stat]
+    encodeNodes = stats.createStatistic(fileName)
 
-    if len(codes) % 2 == 1:
-        codes.insert(len(codes), ['', '', 0, ''])
-
-    codes = huffman(codes)
-    return codes
+    if len(encodeNodes) % 2 == 1:
+        encodeNodes.insert(len(encodeNodes), EncodeNode(prob = 0))
+    
+    return huffman(encodeNodes)
 
 """Implementation of the Huffman encoding algorithm, using a max heap.
 
@@ -67,16 +66,16 @@ def huffman(codes):
         left = heapNodes[len(heapNodes) - 1]
         right = heapNodes[len(heapNodes) - 2]
 
-        root = HeapNode(['','',left.value[2] + right.value[2], ''])
+        root = HeapNode(EncodeNode(prob = left.value.prob + right.value.prob))
         root.left = left
         root.right = right
 
         heapNodes = heapNodes[0 : len(heapNodes) - 2]
         heapNodes.insert(0, root)
-        heapNodes.sort(key = lambda h : h.value[2], reverse = True)
+        heapNodes.sort(key = lambda h : h.value.prob, reverse = True)
 
     addCode(heapNodes[0]) # heapNodes[0] is the root
     codes = []
     heapToList(heapNodes[0], codes)
-    codes.sort(key = lambda c : c[2], reverse = True)
+    codes.sort(key = lambda c : c.prob, reverse = True)
     return codes

@@ -2,6 +2,7 @@
 import operator
 import collections
 import math
+from EncodeNode import EncodeNode
 
 """Creates a statistic of the symbols found in the input file
 :param fileName: path to the input file
@@ -25,7 +26,7 @@ def createStatistic(filePath):
                 charNum += 1
             line = f.readline()
     stat = sorted(stat.items(), key=operator.itemgetter(1), reverse=True)
-    return [tup + (tup[1]/charNum * 100,) for tup in stat]
+    return [EncodeNode(symbol = s[0], count = s[1], prob = (s[1]/charNum * 100)) for s in stat]
 
 """Returns the metrics determining the encoding's optimality
 :param codes: the list of 4 length lists where:
@@ -41,11 +42,12 @@ def createStatistic(filePath):
         2 - optimality
         3 - compression ratio
 """
-def getOptimality(codes):
-    codes = [[c[0], c[1], c[2] / 100, c[3]] for c in codes ]
-    avg = sum([c[2] * len(c[3]) for c in codes])
-    min = - sum([c[2] * math.log(c[2], 2) for c in codes])
+def getOptimality(encodeNodes):
+    for e in encodeNodes:
+        e.prob = e.prob / 100
+    avg = sum([e.prob * len(e.code) for e in encodeNodes])
+    min = - sum([e.prob * math.log(e.prob, 2) for e in encodeNodes])
     opt = min / avg
-    compRatio = math.ceil(math.log2(len(codes))) / avg
+    compRatio = math.ceil(math.log2(len(encodeNodes))) / avg
 
     return [avg, min, opt, compRatio]
