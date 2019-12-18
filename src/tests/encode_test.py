@@ -15,15 +15,16 @@ def test_firstArgumentHelp():
     out, err, exitCode = capture(command)
     outputMessages = out.split(b'\r\n')
 
-    assert len(outputMessages) == 8
+    assert len(outputMessages) == 9
     assert outputMessages[0] == b'Usage: encode.py [task] [filename]'
     assert outputMessages[1] == b'Available tasks: -d:   creates and displays the symbol appearance statistics'
     assert outputMessages[2] == b'                 -sf:  performs a shannon-fano encoding'
     assert outputMessages[3] == b'                 -sfs: performs a shannon-fano encoding and displays its optimality'
     assert outputMessages[4] == b'                 -hf:  performs a huffman encoding'
     assert outputMessages[5] == b'                 -hfs: performs a huffman encoding and displays its optimality'
-    assert outputMessages[6] == b'                 -h:   displays this message'
-    assert outputMessages[7] == b'' #Trailing endline
+    assert outputMessages[6] == b'                 -ac: performs an arithmetic encoding'
+    assert outputMessages[7] == b'                 -h:   displays this message'
+    assert outputMessages[8] == b'' #Trailing endline
 
     assert err == b''
     assert exitCode == 0
@@ -37,7 +38,7 @@ def test_argumentListInvalid_tooShort():
     assert exitCode == errno.E2BIG
 
 def test_argumentListInvalid_tooLong():
-    command = ["python", "encode.py", "invalid", "arg", "list"]
+    command = ["python", "encode.py", "invalid", "arg", "list", "five"]
     out, err, exitCode = capture(command)
 
     assertInvalidUsageMessage(err)

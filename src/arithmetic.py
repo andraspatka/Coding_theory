@@ -5,6 +5,9 @@ import file_reader as fr
 
 from EncodeNode import EncodeNode
 
+"""
+Performs an arithmetic coding on the input file
+"""
 def encode(filePath, blockSize):
     encodeNodes = stats.createStatistic(filePath, sortIt = False)
     probMap = {}
@@ -27,19 +30,18 @@ def encode(filePath, blockSize):
         block = fr.getNextBlock(fp, blockSize)
         if block == False:
             break
-        
-        #print(encodeNodesCopy)
         arithmeticCode = arithmeticCode + encodeArithmetic(block, encodeNodes)
-        #print(encodeNodes)
-
         i = 0
         for e in encodeNodesCopy:
             encodeNodes[i] = EncodeNode(symbol = e.symbol, prob = e.prob, interval = e.interval)
             i += 1
         
-    print(arithmeticCode)
     fr.closeFile(fp)
+    return arithmeticCode
 
+"""
+Returns the arithmetic code of the given block
+"""
 def encodeArithmetic(block, encodeNodes):
     probProd = 1
     for b in block:
@@ -49,7 +51,6 @@ def encodeArithmetic(block, encodeNodes):
                 actualNode = e
                 probProd *= actualNode.prob
                 break
-        print(actualNode)
         actualLowerBound = actualNode.interval[0]
         actualUpperBound = actualNode.interval[1]
         intervalLen = actualUpperBound - actualLowerBound
@@ -57,18 +58,16 @@ def encodeArithmetic(block, encodeNodes):
         for i in range(1, len(encodeNodes)):
             lowerBound = encodeNodes[i-1].interval[1]
             encodeNodes[i].interval = (lowerBound, lowerBound + intervalLen * encodeNodes[i].prob)
-    print(block)
     codeLen = int(math.log(1 / probProd, 2)) + 1
-    print(codeLen)
-    print(f"{actualLowerBound}, {actualUpperBound}")
     tag = (actualLowerBound + actualUpperBound) / 2
-    print(tag)
     code = convertToCode(tag, codeLen)
-    print(code)
     
     return code
 
-def convertToCode(realNum, codeLen):
+"""
+Converts a floating point number to binary
+"""
+def convertToCode(realNum, codeLen = 10):
     code = ""
     i = 0
     while realNum > 0 and i < codeLen:

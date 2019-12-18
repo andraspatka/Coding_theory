@@ -36,8 +36,10 @@ def displayCodes(encodeNodes):
             line = f"'{node.symbol}': {node.count} {node.prob:.2f}% '{node.code}'"
             outputLine(f, line)
 
-def displayArithmeticCode(code):
-    return ""
+def displayArithmeticCode(code, blockSize = 20):
+    codeArray = [(code[i : i + blockSize]) for i in range(0, len(code), blockSize)] 
+    for c in codeArray:
+        print(c)
 
 def displayOptimality(optimality):
     with open('codes.txt', 'a') as f:

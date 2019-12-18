@@ -43,13 +43,14 @@ if arguments[1] == "-h":
     print("                 -h:   displays this message")
     sys.exit()
 
-if len(arguments) != 4:
+if len(arguments) != 3 and len(arguments) != 4:
     utils.printInvalidUsageErrorMessage()
     sys.exit(errno.E2BIG)
 
 task = arguments[1]
 fileName = arguments[2]
-blockLen = int(arguments[3])
+if task == TASK_ARITH:
+    blockSize = int(arguments[3])
 
 if task not in TASKS:
     sys.stderr.write(f"Invalid usage! The given task: {task} does not exist!\n")
@@ -75,5 +76,6 @@ if task == TASK_HUFF_STAT:
     utils.display(huffman.encode(fileName))
     utils.displayOptimality(stats.getOptimality(codes))
 if task == TASK_ARITH:
-    code = arithmetic.encode(fileName, blockLen)
+    code = arithmetic.encode(fileName, blockSize)
+    utils.displayArithmeticCode(code)
 
