@@ -36,6 +36,9 @@ def displayCodes(encodeNodes):
             line = f"'{node.symbol}': {node.count} {node.prob:.2f}% '{node.code}'"
             outputLine(f, line)
 
+def displayArithmeticCode(code):
+    return ""
+
 def displayOptimality(optimality):
     with open('codes.txt', 'a') as f:
         line = "-------------------------------------"

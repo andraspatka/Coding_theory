@@ -15,6 +15,7 @@ import stats
 import shannon_fano
 import utils
 import huffman
+import arithmetic
 
 arguments = sys.argv
 
@@ -23,8 +24,9 @@ TASK_SF = "-sf"
 TASK_HUFF = "-hf"
 TASK_SF_STAT = "-sfs"
 TASK_HUFF_STAT = "-hfs"
+TASK_ARITH = "-ac"
 
-TASKS = [TASK_DISPLAY, TASK_SF, TASK_HUFF, TASK_SF_STAT, TASK_HUFF_STAT]
+TASKS = [TASK_DISPLAY, TASK_SF, TASK_HUFF, TASK_SF_STAT, TASK_HUFF_STAT, TASK_ARITH]
 
 if len(arguments) == 1:
     utils.printInvalidUsageErrorMessage()
@@ -37,15 +39,17 @@ if arguments[1] == "-h":
     print(f"                 {TASK_SF_STAT}: performs a shannon-fano encoding and displays its optimality")
     print(f"                 {TASK_HUFF}:  performs a huffman encoding")
     print(f"                 {TASK_HUFF_STAT}: performs a huffman encoding and displays its optimality")
+    print(f"                 {TASK_ARITH}: performs an arithmetic encoding")
     print("                 -h:   displays this message")
     sys.exit()
 
-if len(arguments) != 3:
+if len(arguments) != 4:
     utils.printInvalidUsageErrorMessage()
     sys.exit(errno.E2BIG)
 
 task = arguments[1]
 fileName = arguments[2]
+blockLen = int(arguments[3])
 
 if task not in TASKS:
     sys.stderr.write(f"Invalid usage! The given task: {task} does not exist!\n")
@@ -70,3 +74,6 @@ if task == TASK_HUFF_STAT:
     codes = huffman.encode(fileName)
     utils.display(huffman.encode(fileName))
     utils.displayOptimality(stats.getOptimality(codes))
+if task == TASK_ARITH:
+    code = arithmetic.encode(fileName, blockLen)
+

@@ -11,7 +11,7 @@ from EncodeNode import EncodeNode
     A dictionary containing the symbols, their number of occurrences and the percentage in the input file.
     The dictionary is sorted based on the character occurrences in descending order.
 """
-def createStatistic(filePath):
+def createStatistic(filePath, sortIt=True):
     stat = {}
     charNum = 0
     with open(filePath, "r", encoding='utf-8-sig') as f:
@@ -25,7 +25,9 @@ def createStatistic(filePath):
                     stat[c] = stat[c] + 1
                 charNum += 1
             line = f.readline()
-    stat = sorted(stat.items(), key=operator.itemgetter(1), reverse=True)
+    stat = stat.items()
+    if sortIt: 
+        stat = sorted(stat, key=operator.itemgetter(1), reverse=True)
     return [EncodeNode(symbol = s[0], count = s[1], prob = (s[1]/charNum * 100)) for s in stat]
 
 """Returns the metrics determining the encoding's optimality
