@@ -36,6 +36,9 @@ def displayCodes(encodeNodes):
             line = f"'{node.symbol}': {node.count} {node.prob:.2f}% '{node.code}'"
             outputLine(f, line)
 
+"""
+Displays the arithmetic code split into blockSize chunks
+"""
 def displayArithmeticCode(code, blockSize = 20):
     codeArray = [(code[i : i + blockSize]) for i in range(0, len(code), blockSize)] 
     for c in codeArray:
