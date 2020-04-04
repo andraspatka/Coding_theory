@@ -26,4 +26,6 @@ Currently available tasks:
  - **-sfs** : encodes the input file using Shannon-Fano encoding and prints the encoding's optimality
  - **-hf** : encodes the input file using Huffman encoding
  - **-hfs** : encodes the input file using Huffman encoding and prints the encoding's optimality
+ - **-ac** : encodes the input file using Arithmetic coding
  - **-h** :  prints the help message
+ 
